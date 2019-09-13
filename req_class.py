@@ -2,12 +2,7 @@ import json
 from bs4 import BeautifulSoup
 import requests
 
-jsons = {
-  "images": True,
-  "links": True,
-  "text": True,
-  "url": "https://www.newpoints.org"
-}
+
 class req_class():
 
     def __init__(self, jsons):

@@ -33,29 +33,7 @@ def soup_it():
 def get_site(dictionary):
     req = req_class(dictionary)
     return req.parse_tags()
-# print(req.parse_tags())
-    # images = {}
-    # links = {}
-    # text = {}
-    # soups = []
-    # r = requests.get(url)
-    # soup = BeautifulSoup(r.text, 'html.parser')
-    # for tag in items:
-    #     if tag == "a":
-    #         link_set = soup.find_all("a")
-    #         for i in link_set:
-    #             if "\n" in i.text:
-    #                 pass
-    #             else:
-    #                 links[i['href']] = i.text
-    #     if tag == "img":
-    #         image_set = soup.findAll("img")
-    #         for img in image_set:
-    #             if img.get('alt') == None:
-    #                 images["no_alt_tag"] = img.get("src")
-    #             else:
-    #                 images[img.get('alt')] = img.get('src')
-    # return { "links": links, "images": images }
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
