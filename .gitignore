@@ -7,3 +7,4 @@ lib/*
 share/
 share/*
 
+secret_key.py

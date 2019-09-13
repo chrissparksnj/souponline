@@ -12,9 +12,6 @@ class req_class():
         self.request = requests.get(self.url)
         self.soup =  BeautifulSoup(self.request.text, "html.parser")
 
-    def get_url(self):
-        return self.url
-
     def get_vars(self):
         varss =  vars(self)
         return {k:v for (k,v) in varss.items() if v == True}
