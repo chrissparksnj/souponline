@@ -1,0 +1,58 @@
+<head>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+</head>
+<div class="navbar is-danger">
+    <div class="container">
+        <div class="navbar-brand">
+            <a href="#">
+                <img id="python-logo" height="50" width="50"
+                    src="http://icons.iconarchive.com/icons/papirus-team/papirus-apps/128/python-icon.png" alt="">
+            </a>
+            <a href="#" class="navbar-item">Home</a>
+            <a href="#" class="navbar-item">About</a>
+        </div>
+    </div>
+</div>
+<section class="hero is-medium is-bold is-warning">
+    <div class="hero-body  has-text-centered">
+        <h1 class='title'>Soup Online</h1>
+        <h1 class="subtitle">Enter a URL, and check off which items you'd like to retrieve. </h1>
+
+        <div class="columns has-text-centered">
+            <div class="column is-4 is-offset-4">
+                <form action="{{ url_for('soup_it') }}" method="post">
+                    {{ form.csrf_token }}
+
+                    <div class="field">
+                        <div class="control">
+                         {{ form.url(class="input", placeholder="Enter url") }}
+                            <!-- <input name="url" class="input" type="text" placeholder="Enter URL"> -->
+                        </div>
+                    </div>
+
+
+                    <div class="field is-grouped is-grouped-centered">
+                        <div class="control">
+                            <label  class="checkbox">{{ form.links }}Links</label>
+                            <label class="checkbox">{{ form.images }}Images</label> 
+                            <label class="checkbox">{{ form.text }}Text</label>
+                        </div>
+                    </div>
+                    <div class="field ">
+                        <div class="control has-text-centered">
+                            <button type="submit" name="submit" class="button is-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>
+            <strong>Developed by </strong> by <a target="_blank" href="https://twitter.com/1000daysofcode">Christopher Sparks</a>.
+        </p>
+    </div>
+</footer>

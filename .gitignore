@@ -1,0 +1,9 @@
+bin/
+bin/*
+
+lib/
+lib/*
+
+share/
+share/*
+
