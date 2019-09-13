@@ -74,7 +74,6 @@ class req_class():
                 count = count + 1
                 text_dict["text_" + str(count)] = txt.strip()
         return text_dict
-        return "".join(t.strip() for t in visible_texts)
 
     def parse_links(self, resultset):
         link_dict = {}
