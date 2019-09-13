@@ -24,8 +24,8 @@ def soup_it():
         processed_dict = {}
         processed_dict["url"]  = form.url.data
         processed_dict["images"] = form.images.data
-        processed_dict["links"] = links
-        processed_dict["text"] = form.links.data
+        processed_dict["links"] = form.links.data
+        processed_dict["text"] = form.text.data
         return get_site(processed_dict)
 
 

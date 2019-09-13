@@ -6,41 +6,34 @@ import requests
 class req_class():
 
     def __init__(self, jsons):
+        ''' take in a json post request and dynamically assign object properties '''
         for key, val in jsons.items():
             self.__setattr__(key, val)
-        self.lookup_table = {"links":"a", "images":"img", "text":"p"}
+
+        ''' self.url will always be in POST request so just set it up here '''
         self.request = requests.get(self.url)
         self.soup =  BeautifulSoup(self.request.text, "html.parser")
 
     def get_vars(self):
+        ''' get all object variables and return only True ones '''
         varss =  vars(self)
         return {k:v for (k,v) in varss.items() if v == True}
 
-    def return_tags(self):
-        tags = []
-        varss = self.get_vars()
-        
-        for key in varss:
-            if key in self.lookup_table:
-                tags.append(self.lookup_table[key])
-        return tags
-
     def parse_tags(self):
-        tags = self.return_tags()
-        payload = {}
-        for tag in tags:
-            if tag == "a":
-                resultset = self.soup.find_all(tag)
+        items_to_get = self.get_vars()
+        payload = {} # final payload that will be returned
+        for itm in items_to_get:
+            if itm == "links":
+                resultset = self.soup.find_all("a")
                 parsed_links = self.parse_links(resultset)
                 payload["links"] = parsed_links
-            if tag == "p":
-                parsed_text = self.text_from_html()
+            if itm == "text":
+                parsed_text = self.parse_text()
                 payload["text"] = parsed_text
-            if tag == "img":
-                resultset = self.soup.findAll(tag)
+            if itm == "images":
+                resultset = self.soup.findAll("img")
                 images = self.parse_images(resultset)
                 payload["images"] = images
-
         return payload
 
     def parse_images(self, resultset):
@@ -53,13 +46,18 @@ class req_class():
             src = next(iter(img.attrs))
             image_dict["image_link_" + str(count)] = img.get(src)
         return image_dict
+    
+    def parse_links(self, resultset):
+        link_dict = {}
+        for i in resultset:
+            if len(i.get_text().strip()) != 0:
+                anchor_text = i.get_text().strip()
+                href =  self.url + i.get('href')
+                link_dict[anchor_text] = href
+        return link_dict
 
-    def tag_visible(self, element):
-        if element.parent.name in ['style', 'script', 'head', 'title', 'meta', '[document]']:
-            return False
-        return True
 
-    def text_from_html(self):
+    def parse_text(self):
         text_dict = {}
         count = 0
         texts = self.soup.findAll(text=True)
@@ -72,13 +70,15 @@ class req_class():
                 text_dict["text_" + str(count)] = txt.strip()
         return text_dict
 
-    def parse_links(self, resultset):
-        link_dict = {}
-        for i in resultset:
-            if len(i.get_text().strip()) != 0:
-                anchor_text = i.get_text().strip()
-                href =  self.url + i.get('href')
-                link_dict[anchor_text] = href
-        return link_dict
+
+    # these to functions are from GOD tier stackoverflow: https://stackoverflow.com/a/1983219/6536037
+    def tag_visible(self, element):
+        if element.parent.name in ['style', 'script', 'head', 'title', 'meta', '[document]']:
+            return False
+        return True
+
+
+
+
 
 
