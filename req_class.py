@@ -43,19 +43,33 @@ class req_class():
             count = count + 1
             # get the first tag name in the images attributes. 
             # helps differentiates between img.get("src") and img.get("data-src")
-            src = next(iter(img.attrs))
-            image_dict["image_link_" + str(count)] = img.get(src)
+            src = ''
+            #src = str(dict(img.attrs))
+            for tag, val in dict(img.attrs).items():
+                if ".jpg" in val or ".png" in val or ".svg" in val:
+                    src = tag
+                elif next(iter(img.attrs)) == "data-src":
+                    # image_dict["DEBUG"] = img.attrs
+                    src = 'data-src'
+                elif not src:
+                    src = 'src'
+                if str(img.get(src)).startswith("http") or str(img.get(src)).startswith("//"):
+                    image_dict["image_link_" + str(count)] = str(img.get(src))
+                else:
+                    image_dict["image_link_" + str(count)] = str(self.url) + str(img.get(src))
         return image_dict
+
+    
     
     def parse_links(self, resultset):
         link_dict = {}
         for i in resultset:
             if len(i.get_text().strip()) != 0:
                 anchor_text = i.get_text().strip()
-                if str(i.get('href')).strip().startswith("http"):
+                if str(i.get('href')).strip().startswith("http") or str(i.get('href')).strip().startswith("//"):
                     href = str(i.get('href'))
                 else:
-                    href =   str(self.url) + str(i.get('href'))
+                    href = str(self.url) + str(i.get('href'))
                 link_dict[anchor_text] = href
         return link_dict
 

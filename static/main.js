@@ -24,6 +24,7 @@ const postMainForm = (data) => {
         if (xhr.readyState === 4) {
             // remove loading bar
             destroyElem("loading_bar")
+            console.log(xhr.responseText)
             handle_json(xhr.responseText)
         }
     }
@@ -39,9 +40,19 @@ const createTile = (ancestor_tile, json, color) => {
 
 
     Object.values(json).map(val => {
-        let li = document.createElement("div");
-        li.textContent = val;
-        new_div.appendChild(li);}
+        if (val.includes("http") || val.startsWith("//")){
+            let div = document.createElement("div")
+            let link = document.createElement("a")
+            link.setAttribute("href", val)
+            link.setAttribute("target", "_blank")
+            link.innerText = val.substring(0, 50)
+            div.appendChild(link)
+            new_div.appendChild(div)
+        }else{
+            let li = document.createElement("div");
+            li.textContent = val;
+            new_div.appendChild(li);}
+        }
         )
 
     // Make class props for tile
