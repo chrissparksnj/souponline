@@ -24,13 +24,56 @@ const postMainForm = (data) => {
         if (xhr.readyState === 4) {
             // remove loading bar
             destroyElem("loading_bar")
-            console.log(xhr.responseText)
+            handle_json(xhr.responseText)
         }
     }
     // show loading bar
     var loading_props = { "class": "progress is-small is-primary", "max": "100", "id": "loading_bar" }
-    document.querySelector('form').appendChild(createCustomElement("progress", loading_props, "15%"))
+    appendToId("main_form", createCustomElement("progress", loading_props, "15%"))
     xhr.send(JSON.stringify(data));
+}
+
+const createTile = (ancestor_tile, json) => {
+    let html = ''
+
+    let colors = ["is-danger", "is-info", "is-success", "is-warning", "is-link", "is-primary"]
+
+    Object.values(json).map(val => html = html + val + "\n")
+    var color = colors[Math.floor(Math.random()*colors.length)];
+
+    // Make class props for tile
+    tile_props = {"class":`tile is-4 ${color} is-child notification`}
+
+    // Make new tile
+    let tile = createCustomElement("div", tile_props, html)
+
+    // append tile to ancestor (main) tile
+    ancestor_tile.appendChild(tile)
+}
+
+const handle_json = (json) => {
+    var json = JSON.parse(json)
+    var json_keys = Object.keys(json)
+
+    
+    // Create main tile
+    let tile_props = {"class":"tile is-primary is-ancestor notification"}
+    let ancestor_tile = createCustomElement("div", tile_props)
+
+    // Get JSON keys and create a tile for each and append to main tile
+    json_keys.map(key => createTile(ancestor_tile, json[key]))
+
+    // Append main tile to main-section
+    appendSibling("main-section", ancestor_tile)
+}
+
+const appendToId = (parent, child) => {
+    document.getElementById(parent).appendChild(child)
+}
+
+const appendSibling = (parent, sibling) => {
+    var par = document.getElementById(parent)
+    par.parentNode.insertBefore(sibling, par.nextSibling)
 }
 
 const destroyElem = (elemId) => {
