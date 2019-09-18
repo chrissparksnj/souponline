@@ -63,6 +63,11 @@
 <script type="text/javascript" src="{{ url_for('static', filename='main.js') }}"></script>
 <script>
 document.getElementById("submit_button").addEventListener("click", function(e){
+    try{
+        destroyElem("main-tile");
+    }catch(err){
+        console.log("fresh start")
+    }
     e.preventDefault()
     let data = serializeMainForm(document.forms.main_form)
     postMainForm(data)

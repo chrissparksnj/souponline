@@ -24,7 +24,7 @@ const postMainForm = (data) => {
         if (xhr.readyState === 4) {
             // remove loading bar
             destroyElem("loading_bar")
-            console.log(xhr.responseText)
+            // console.log(xhr.responseText)
             handle_json(xhr.responseText)
         }
     }
@@ -60,7 +60,7 @@ const createTile = (ancestor_tile, json, color) => {
 
     // Make new tile
     let tile = createCustomElement("div", tile_props)
-    console.log(tile)
+    // console.log(tile)
     tile.appendChild(new_div)
     // append tile to ancestor (main) tile
     ancestor_tile.appendChild(tile)
@@ -73,7 +73,7 @@ const handle_json = (json) => {
 
 
     // Create main tile
-    let tile_props = {"class":"tile is-primary is-ancestor notification"}
+    let tile_props = {"id":"main-tile", "class":"tile is-primary is-ancestor notification"}
     let ancestor_tile = createCustomElement("div", tile_props)
 
     // Get JSON keys and create a tile for each and append to main tile
