@@ -1,5 +1,5 @@
 <head>
-
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
 </head>
 <div class="navbar is-danger">
@@ -21,30 +21,32 @@
 
         <div class="columns has-text-centered">
             <div class="column is-4 is-offset-4">
-                <form action="{{ url_for('soup_it') }}" method="post">
-                    {{ form.csrf_token }}
+                <form id="main_form" action="{{ url_for('soup_it') }}" method="post">
 
                     <div class="field">
                         <div class="control">
-                         {{ form.url(class="input", placeholder="Enter url") }}
-                            <!-- <input name="url" class="input" type="text" placeholder="Enter URL"> -->
+                            <input name="url" class="input" type="text" placeholder="Enter URL">
                         </div>
                     </div>
 
 
                     <div class="field is-grouped is-grouped-centered">
                         <div class="control">
-                            <label  class="checkbox">{{ form.links }}Links</label>
-                            <label class="checkbox">{{ form.images }}Images</label> 
-                            <label class="checkbox">{{ form.text }}Text</label>
+                                <label  class="checkbox"><input id="links" name="links" type="checkbox" value="y">Links</label>
+    
+                                <label class="checkbox"><input id="images" name="images" type="checkbox" value="y">Images</label> 
+    
+                                <label class="checkbox"><input id="text" name="text" type="checkbox" value="y">Text</label>
                         </div>
                     </div>
                     <div class="field ">
                         <div class="control has-text-centered">
-                            <button type="submit" name="submit" class="button is-primary">Submit</button>
+                            <button id="submit_button" class="button is-primary">Submit</button>
                         </div>
                     </div>
+                    
                 </form>
+
             </div>
         </div>
     </div>
@@ -56,3 +58,12 @@
         </p>
     </div>
 </footer>
+
+<script type="text/javascript" src="{{ url_for('static', filename='main.js') }}"></script>
+<script>
+document.getElementById("submit_button").addEventListener("click", function(e){
+    e.preventDefault()
+    let data = serializeMainForm(document.forms.main_form)
+    postMainForm(data)
+})
+</script>

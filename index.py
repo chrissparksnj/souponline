@@ -3,7 +3,7 @@ from req_class import *
 from bs4 import BeautifulSoup
 import requests
 from flask import Flask
-from flask import render_template, request
+from flask import render_template, request, jsonify
 from secret_key import *
 
 app = Flask(__name__)
@@ -13,20 +13,13 @@ app.config["SECRET_KEY"] = secret_key
 
 @app.route("/")
 def hello(name=None):
-    form = main_form()
-    return render_template('index.html', form=form)
+    return render_template('index.html')
 
 
 @app.route("/handler", methods=["POST"])
 def soup_it():
-    form = main_form()
     if request.method == "POST":
-        processed_dict = {}
-        processed_dict["url"]  = form.url.data
-        processed_dict["images"] = form.images.data
-        processed_dict["links"] = form.links.data
-        processed_dict["text"] = form.text.data
-        return str(get_site(processed_dict))
+        return str(get_site(request.json))
 
 
 def get_site(dictionary):

@@ -17,7 +17,7 @@ class req_class():
     def get_vars(self):
         ''' get all object variables and return only True ones '''
         varss =  vars(self)
-        return {k:v for (k,v) in varss.items() if v == True}
+        return {k:v for (k,v) in varss.items() if v == "y"}
 
     def parse_tags(self):
         items_to_get = self.get_vars()
@@ -34,7 +34,7 @@ class req_class():
                 resultset = self.soup.findAll("img")
                 images = self.parse_images(resultset)
                 payload["images"] = images
-        return payload
+        return json.dumps(payload)
 
     def parse_images(self, resultset):
         image_dict = {}
@@ -52,7 +52,7 @@ class req_class():
         for i in resultset:
             if len(i.get_text().strip()) != 0:
                 anchor_text = i.get_text().strip()
-                href =  self.url + i.get('href')
+                href =  str(self.url) + str(i.get('href'))
                 link_dict[anchor_text] = href
         return link_dict
 
