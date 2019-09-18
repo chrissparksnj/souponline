@@ -33,20 +33,24 @@ const postMainForm = (data) => {
     xhr.send(JSON.stringify(data));
 }
 
-const createTile = (ancestor_tile, json) => {
-    let html = ''
+const createTile = (ancestor_tile, json, color) => {
+    let new_div = document.createElement("div")
 
-    let colors = ["is-danger", "is-info", "is-success", "is-warning", "is-link", "is-primary"]
 
-    Object.values(json).map(val => html = html + val + "\n")
-    var color = colors[Math.floor(Math.random()*colors.length)];
+
+    Object.values(json).map(val => {
+        let li = document.createElement("div");
+        li.textContent = val;
+        new_div.appendChild(li);}
+        )
 
     // Make class props for tile
     tile_props = {"class":`tile is-4 ${color} is-child notification`}
 
     // Make new tile
-    let tile = createCustomElement("div", tile_props, html)
-
+    let tile = createCustomElement("div", tile_props)
+    console.log(tile)
+    tile.appendChild(new_div)
     // append tile to ancestor (main) tile
     ancestor_tile.appendChild(tile)
 }
@@ -55,13 +59,17 @@ const handle_json = (json) => {
     var json = JSON.parse(json)
     var json_keys = Object.keys(json)
 
-    
+
+
     // Create main tile
     let tile_props = {"class":"tile is-primary is-ancestor notification"}
     let ancestor_tile = createCustomElement("div", tile_props)
 
     // Get JSON keys and create a tile for each and append to main tile
-    json_keys.map(key => createTile(ancestor_tile, json[key]))
+    json_keys.map((key, index)=> {
+        let colors = ["is-danger", "is-info", "is-success"]
+        createTile(ancestor_tile, json[key], colors[index])
+    })
 
     // Append main tile to main-section
     appendSibling("main-section", ancestor_tile)
@@ -82,12 +90,13 @@ const destroyElem = (elemId) => {
     elem.parentNode.removeChild(elem)
 
 }
-const createCustomElement = (typee, attributes = [], text_content = '') => {
+const createCustomElement = (typee, attributes = [], text_content = '', html_content = '') => {
     // creates an element with a JSON dictionary for attributes
     obj = document.createElement(typee)
     attr_json = Object.entries(attributes)
     attr_json.map(a => obj.setAttribute(a[0], a[1]))
     obj.textContent = text_content
+    obj.innerHtml = html_content
     return obj
 }
 

@@ -52,7 +52,10 @@ class req_class():
         for i in resultset:
             if len(i.get_text().strip()) != 0:
                 anchor_text = i.get_text().strip()
-                href =  str(self.url) + str(i.get('href'))
+                if str(i.get('href')).strip().startswith("http"):
+                    href = str(i.get('href'))
+                else:
+                    href =   str(self.url) + str(i.get('href'))
                 link_dict[anchor_text] = href
         return link_dict
 
